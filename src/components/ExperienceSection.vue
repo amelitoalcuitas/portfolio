@@ -18,11 +18,11 @@
           v-for="(experience, index) in experiences"
           :key="experience.title"
           :class="[
-            'bg-gray-700 rounded-lg overflow-hidden shadow-lg transition-all duration-700 transform',
+            'bg-gray-700 rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-700',
             index < experiences.length - 1 ? 'mb-12' : '',
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10',
           ]"
-          :style="{ transitionDelay: `${(index + 1) * 200}ms` }"
+
         >
           <div class="p-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
@@ -149,3 +149,5 @@ onMounted(() => {
   })
 })
 </script>
+
+

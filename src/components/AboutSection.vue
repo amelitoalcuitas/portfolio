@@ -15,9 +15,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div class="space-y-6">
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-            :style="{ transitionDelay: '200ms' }"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
               <svg
@@ -37,6 +36,7 @@
               Who I Am
             </h3>
             <p class="text-gray-300">
+              Hey there! I'm <span class="text-blue-500 font-bold"> Amelito N. Alcuitas Jr. </span>, but you can call me <span class="text-blue-500 font-bold"> Amelitz </span> or <span class="text-blue-500 font-bold"> Mel </span>. 
               I'm a passionate Full Stack Developer with a strong focus on creating efficient,
               scalable, and user-friendly web applications. With over 5 years of experience in the
               industry, I've developed a deep understanding of both front-end and back-end
@@ -45,9 +45,8 @@
           </div>
 
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-            :style="{ transitionDelay: '400ms' }"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
               <svg
@@ -76,9 +75,8 @@
 
         <div class="space-y-6">
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-            :style="{ transitionDelay: '300ms' }"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
               <svg
@@ -170,9 +168,8 @@
           </div>
 
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-            :style="{ transitionDelay: '500ms' }"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
               <svg

@@ -15,9 +15,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Frontend Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-          :style="{ transitionDelay: '200ms' }"
         >
           <div class="flex items-center mb-6">
             <div class="p-3 bg-blue-600 rounded-lg mr-4">
@@ -57,9 +56,8 @@
 
         <!-- Backend Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-          :style="{ transitionDelay: '400ms' }"
         >
           <div class="flex items-center mb-6">
             <div class="p-3 bg-green-600 rounded-lg mr-4">
@@ -99,9 +97,8 @@
 
         <!-- Database Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-          :style="{ transitionDelay: '600ms' }"
         >
           <div class="flex items-center mb-6">
             <div class="p-3 bg-purple-600 rounded-lg mr-4">
@@ -141,9 +138,8 @@
 
         <!-- Tools Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform"
+          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-          :style="{ transitionDelay: '800ms' }"
         >
           <div class="flex items-center mb-6">
             <div class="p-3 bg-yellow-600 rounded-lg mr-4">

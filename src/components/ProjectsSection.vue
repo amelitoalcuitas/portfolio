@@ -19,21 +19,28 @@
     <div class="container mx-auto">
       <h2
         class="text-3xl md:text-5xl font-bold mb-16 text-center transition-all duration-700 transform font-heading section-heading"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'"
+        :class="isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-10 scale-95'"
       >
         My <span class="text-blue-500">Projects</span>
       </h2>
 
-      <div
-        class="space-y-40 transition-all duration-1000 transform"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'"
-        :style="{ transitionDelay: '300ms' }"
-      >
+      <div class="space-y-40">
         <!-- Project Row (one for each project) -->
         <div
           v-for="(project, projectIndex) in projects"
           :key="projectIndex"
-          class="bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:shadow-blue-900/20"
+          :ref="
+            (el) => {
+              // Ensure we have a ref for this index
+              while (projectRefs.length <= projectIndex) {
+                projectRefs.push(ref(null))
+              }
+              // Set the element to the ref
+              projectRefs[projectIndex].value = el
+            }
+          "
+          class="bg-gray-800 rounded-xl overflow-hidden shadow-2xl transform transition-all duration-1000 hover:shadow-blue-900/20"
+          :class="projectVisibility[projectIndex] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95'"
         >
           <!-- Project Content -->
           <div class="flex flex-col md:flex-row md:h-[600px]">
@@ -193,8 +200,12 @@ import { useSwipe } from '@/composables/useSwipe'
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
+// Create refs for each project container
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const projectRefs: Ref<any>[] = []
+// Create array to track visibility of each project
+const projectVisibility = ref<boolean[]>([])
 // Create refs for each carousel container
-// Using a more generic type to accommodate Vue's component instance
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const carouselRefs: Ref<any>[] = []
 
@@ -266,24 +277,66 @@ const { galleryRef, openImageViewer } = useImageViewer(projects, pauseAutoplay, 
 onMounted(() => {
   startAutoplay()
 
+  // Initialize project visibility array with false values
+  projectVisibility.value = projects.map(() => false)
+
   // Create an Intersection Observer to detect when the section is visible or hidden
-  const observer = new IntersectionObserver(
+  const sectionObserver = new IntersectionObserver(
     (entries) => {
       // Check if the section is intersecting with the viewport
       if (entries[0].isIntersecting) {
         isVisible.value = true
+      } else {
+        // Reset visibility when section is out of view for reanimation when scrolling back
+        isVisible.value = false
       }
     },
     {
       // Trigger when at least 20% of the element is visible
-      threshold: 0.2,
+      threshold: 0.1
     },
   )
 
   // Start observing the section element
   if (sectionRef.value) {
-    observer.observe(sectionRef.value)
+    sectionObserver.observe(sectionRef.value)
   }
+
+  // Create an Intersection Observer for each project
+  const projectObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        // Find the project index from the data attribute
+        const projectIndex = parseInt(entry.target.getAttribute('data-project-index') || '0')
+
+        // Update the visibility state for this project
+        if (entry.isIntersecting) {
+          projectVisibility.value[projectIndex] = true
+        } else {
+          // Optional: Reset visibility when project is out of view
+          // projectVisibility.value[projectIndex] = false
+        }
+      })
+    },
+    {
+      // Trigger when at least 30% of the project is visible
+      threshold: 0.3,
+      // Start animation slightly before the project comes into view
+      rootMargin: '0px 0px -10% 0px'
+    }
+  )
+
+  // Wait for the DOM to update with refs
+  setTimeout(() => {
+    // Start observing each project element
+    projectRefs.forEach((projectRef, index) => {
+      if (projectRef.value) {
+        // Add a data attribute to identify the project
+        projectRef.value.setAttribute('data-project-index', index.toString())
+        projectObserver.observe(projectRef.value)
+      }
+    })
+  }, 100)
 
   // Set up swipe functionality for each carousel
   projects.forEach((_, projectIndex) => {
@@ -302,10 +355,16 @@ onMounted(() => {
     )
   })
 
-  // Clean up the observer when component is unmounted
+  // Clean up the observers when component is unmounted
   onBeforeUnmount(() => {
-    if (sectionRef.value) {
-      observer.unobserve(sectionRef.value)
+    // Disconnect section observer
+    if (sectionObserver) {
+      sectionObserver.disconnect()
+    }
+
+    // Disconnect project observer
+    if (projectObserver) {
+      projectObserver.disconnect()
     }
   })
 })

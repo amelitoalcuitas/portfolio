@@ -12,7 +12,6 @@
         <div
           class="relative pl-8 sm:pl-32 py-6 group transition-all duration-700 transform"
           :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'"
-          :style="{ transitionDelay: '200ms' }"
         >
           <!-- Timeline line -->
           <div
@@ -24,7 +23,7 @@
             class="absolute top-6 left-0 sm:left-16 -ml-2.5 h-6 w-6 rounded-full border-4 border-blue-500 bg-gray-900 z-10"
           ></div>
 
-          <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+          <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 transition-all duration-700">
             <h3 class="text-xl font-bold text-white mb-1">
               Bachelor of Science in Information and Communications Technology
             </h3>
@@ -77,7 +76,6 @@
         <div
           class="relative pl-8 sm:pl-32 py-6 group transition-all duration-700 transform"
           :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'"
-          :style="{ transitionDelay: '400ms' }"
         >
           <!-- Timeline line -->
           <div
@@ -89,7 +87,7 @@
             class="absolute top-6 left-0 sm:left-16 -ml-2.5 h-6 w-6 rounded-full border-4 border-blue-500 bg-gray-900 z-10"
           ></div>
 
-          <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+          <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 transition-all duration-700">
             <h3 class="text-xl font-bold text-white mb-1">Professional Development</h3>
             <h4 class="text-lg font-semibold text-blue-400 mb-3">Various Online Platforms</h4>
             <div class="flex items-center text-gray-400 mb-4">
