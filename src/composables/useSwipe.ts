@@ -29,15 +29,17 @@ export function useSwipe<T extends Element>(
   let elapsedTime = 0
 
   // Touch event handlers
-  const handleTouchStart = (e: TouchEvent) => {
-    const touchObj = e.changedTouches[0]
+  const handleTouchStart = (e: Event) => {
+    const touchEvent = e as TouchEvent
+    const touchObj = touchEvent.changedTouches[0]
     startX = touchObj.pageX
     startY = touchObj.pageY
     startTime = new Date().getTime() // Record time when finger first makes contact
   }
 
-  const handleTouchEnd = (e: TouchEvent) => {
-    const touchObj = e.changedTouches[0]
+  const handleTouchEnd = (e: Event) => {
+    const touchEvent = e as TouchEvent
+    const touchObj = touchEvent.changedTouches[0]
     const distX = touchObj.pageX - startX // Get horizontal distance traveled
     const distY = touchObj.pageY - startY // Get vertical distance traveled
     elapsedTime = new Date().getTime() - startTime // Get time elapsed
