@@ -3,7 +3,8 @@
     class="relative min-h-screen flex items-center justify-center py-20 px-4"
     ref="sectionRef"
   >
-    <div class="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between">
+
+    <div class="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between relative z-10">
       <!-- Text Content - Left Side on Desktop, Bottom on Mobile -->
       <div class="md:w-1/2 text-center md:text-right mt-10 md:mt-0">
         <h1
@@ -58,7 +59,7 @@
 
     <!-- Scroll down indicator -->
     <div
-      class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce transition-all duration-1000"
+      class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce transition-all duration-1000 z-10"
       :class="isVisible ? 'opacity-100' : 'opacity-0'"
       :style="{ transitionDelay: '800ms' }"
     >

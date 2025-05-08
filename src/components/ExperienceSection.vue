@@ -1,7 +1,7 @@
 <template>
   <section
     id="experience"
-    class="py-20 px-4 bg-gray-800 min-h-screen flex items-center"
+    class="py-20 px-4 min-h-screen flex items-center"
     ref="sectionRef"
   >
     <div class="container mx-auto">
@@ -18,7 +18,7 @@
           v-for="(experience, index) in experiences"
           :key="experience.title"
           :class="[
-            'bg-gray-700 rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-700',
+            'bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-700',
             index < experiences.length - 1 ? 'mb-12' : '',
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10',
           ]"

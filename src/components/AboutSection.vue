@@ -1,7 +1,7 @@
 <template>
   <section
     id="about"
-    class="py-20 px-4 bg-gray-800 min-h-screen flex items-center"
+    class="py-20 px-4 min-h-screen flex items-center"
     ref="sectionRef"
   >
     <div class="container mx-auto w-full">
@@ -15,7 +15,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div class="space-y-6">
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
@@ -45,7 +45,7 @@
           </div>
 
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
@@ -75,7 +75,7 @@
 
         <div class="space-y-6">
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">
@@ -168,7 +168,7 @@
           </div>
 
           <div
-            class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
           >
             <h3 class="text-xl font-semibold mb-4 flex items-center">

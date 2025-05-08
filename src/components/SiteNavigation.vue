@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 bg-gray-800 bg-opacity-90 backdrop-blur-sm py-4 px-6 shadow-lg"
+    class="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 px-6 shadow-lg"
   >
     <div class="container mx-auto flex justify-between items-center">
       <!-- Logo or Site Title -->
@@ -79,7 +79,7 @@
     >
       <div
         v-show="isMenuOpen"
-        class="md:hidden absolute top-full left-0 right-0 bg-gray-800 shadow-lg py-4 px-6"
+        class="md:hidden absolute top-full left-0 right-0 bg-gray-900 shadow-lg py-4 px-6"
       >
         <!-- Mobile Navigation -->
         <div class="flex flex-col space-y-4">

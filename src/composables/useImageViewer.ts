@@ -23,7 +23,7 @@ export function useImageViewer(projects: Project[], onPauseAutoplay: () => void,
     if (!viewer && galleryRef.value) {
       viewer = new Viewer(galleryRef.value, {
         inline: false,
-        navbar: true,
+        navbar: false,
         title: false,
         toolbar: false,
         keyboard: true,

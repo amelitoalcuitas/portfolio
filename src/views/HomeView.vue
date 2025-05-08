@@ -1,14 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-900 text-white">
-    <SiteNavigation />
-    <HeroSection />
-    <AboutSection />
-    <EducationSection />
-    <ExperienceSection />
-    <ProjectsSection />
-    <SkillsSection />
-    <ContactSection />
-    <FooterSection />
+  <div class="min-h-screen bg-gray-900 text-white relative">
+    <!-- Global animated background -->
+    <SimpleParticleBackground />
+
+    <!-- Content with higher z-index -->
+    <div class="relative z-10">
+      <SiteNavigation />
+      <HeroSection />
+      <AboutSection />
+      <EducationSection />
+      <ExperienceSection />
+      <ProjectsSection />
+      <SkillsSection />
+      <ContactSection />
+      <FooterSection />
+    </div>
   </div>
 </template>
 
@@ -22,4 +28,5 @@ import ProjectsSection from '@/components/ProjectsSection.vue'
 import SkillsSection from '@/components/SkillsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import FooterSection from '@/components/FooterSection.vue'
+import SimpleParticleBackground from '@/components/SimpleParticleBackground.vue'
 </script>

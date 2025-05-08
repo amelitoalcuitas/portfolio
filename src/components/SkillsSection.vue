@@ -1,7 +1,7 @@
 <template>
   <section
     id="skills"
-    class="py-20 px-4 bg-gray-800 min-h-screen flex items-center"
+    class="py-20 px-4 min-h-screen flex items-center"
     ref="sectionRef"
   >
     <div class="container mx-auto">
@@ -15,7 +15,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Frontend Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+          class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
         >
           <div class="flex items-center mb-6">
@@ -56,7 +56,7 @@
 
         <!-- Backend Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+          class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
         >
           <div class="flex items-center mb-6">
@@ -97,7 +97,7 @@
 
         <!-- Database Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+          class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
         >
           <div class="flex items-center mb-6">
@@ -138,7 +138,7 @@
 
         <!-- Tools Skills -->
         <div
-          class="bg-gray-700 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
+          class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
           :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
         >
           <div class="flex items-center mb-6">
