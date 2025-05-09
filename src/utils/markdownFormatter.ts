@@ -27,3 +27,33 @@ export function formatMarkdown(text: string): string {
     return DOMPurify.sanitize(text)
   }
 }
+
+/**
+ * Extract navigation hash link from a message
+ * @param message The message to check for navigation hash links
+ * @returns The hash link if found, null otherwise
+ */
+export function extractNavigationHashLink(message: string): string | null {
+  // Check for HTML anchor tags with hash links
+  const htmlLinkRegex = /<a\s+(?:[^>]*?\s+)?href=["'](#[a-z-]+)["'][^>]*>.*?<\/a>/i
+  const htmlMatch = message.match(htmlLinkRegex)
+  if (htmlMatch && htmlMatch[1]) {
+    return htmlMatch[1]
+  }
+
+  // Check for plain text navigation patterns
+  const plainTextRegex = /navigate you to .+?(?:section|page).*?(#[a-z-]+)/i
+  const plainTextMatch = message.match(plainTextRegex)
+  if (plainTextMatch && plainTextMatch[1]) {
+    return plainTextMatch[1]
+  }
+
+  // Check for any mention of navigation with hash
+  const simpleRegex = /navigate.*?(#[a-z-]+)/i
+  const simpleMatch = message.match(simpleRegex)
+  if (simpleMatch && simpleMatch[1]) {
+    return simpleMatch[1]
+  }
+
+  return null
+}

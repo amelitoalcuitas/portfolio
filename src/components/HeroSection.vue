@@ -1,5 +1,6 @@
 <template>
   <section
+    id="home"
     class="relative min-h-screen flex items-center justify-center py-20 px-4"
     ref="sectionRef"
   >

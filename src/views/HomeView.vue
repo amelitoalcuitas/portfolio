@@ -37,4 +37,8 @@ import FooterSection from '@/components/FooterSection.vue'
 import SimpleParticleBackground from '@/components/SimpleParticleBackground.vue'
 import SectionDivider from '@/components/SectionDivider.vue'
 import SectionDividerAlt from '@/components/SectionDividerAlt.vue'
+import { useHashNavigation } from '@/composables/useHashNavigation'
+
+// Initialize hash navigation
+useHashNavigation()
 </script>

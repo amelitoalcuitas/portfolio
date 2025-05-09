@@ -79,7 +79,7 @@
           <p
             v-html="
               formatMarkdown(
-                '👋 **Hi there!** I\'m Amelito\'s AI assistant. How can I help you today?',
+                '👋 **Hi there!** I\'m Amelito\'s AI assistant. How can I help you today? <br> I can help you navigate to different sections of the page. I can also help you find information about Amelito. <br> Just ask and I\'ll do my best to help! ',
               )
             "
           ></p>
@@ -169,7 +169,7 @@
 import { ref, reactive, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useBackToTopVisibility } from '@/composables/useBackToTopVisibility'
 import { geminiService, type ChatMessage, type ChatHistory } from '@/services/GeminiService'
-import { formatMarkdown } from '@/utils/markdownFormatter'
+import { formatMarkdown, extractNavigationHashLink } from '@/utils/markdownFormatter'
 
 // Define props and emits
 defineEmits(['close'])
@@ -277,6 +277,28 @@ const saveChatHistory = () => {
   }
 }
 
+// Function to navigate to a section using hash
+const navigateToSection = (hash: string) => {
+  try {
+    // Remove the # if it exists at the beginning
+    const sectionId = hash.startsWith('#') ? hash.substring(1) : hash
+    const element = document.getElementById(sectionId)
+
+    if (element) {
+      // Scroll to the element
+      element.scrollIntoView({ behavior: 'smooth' })
+
+      return true
+    } else {
+      console.warn(`Section with ID ${sectionId} not found`)
+      return false
+    }
+  } catch (error) {
+    console.error('Error navigating to section:', error)
+    return false
+  }
+}
+
 // Scroll to bottom when new messages are added
 watch(
   () => chatHistory.messages.length,
@@ -285,6 +307,19 @@ watch(
     if (messagesContainer.value) {
       messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
     }
+
+    // Check if the latest message is from the assistant and contains a navigation link
+    const latestMessage = chatHistory.messages[chatHistory.messages.length - 1]
+    if (latestMessage && (latestMessage.role === 'model' || latestMessage.role === 'assistant')) {
+      const hashLink = extractNavigationHashLink(latestMessage.content)
+      if (hashLink) {
+        // Wait a moment before navigating to ensure the UI has updated
+        setTimeout(() => {
+          navigateToSection(hashLink)
+        }, 300)
+      }
+    }
+
     // Save chat history whenever messages change
     saveChatHistory()
   },
@@ -294,6 +329,7 @@ watch(
 defineExpose({
   updateSystemPrompt,
   clearChatHistory,
+  navigateToSection,
 })
 
 // Scroll to bottom on mount

@@ -2,7 +2,11 @@
   <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 px-6 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
       <!-- Logo or Site Title -->
-      <a href="#" class="text-white font-semibold flex items-center">
+      <a
+        href="#home"
+        @click.prevent="scrollToSection('#home')"
+        class="text-white font-semibold flex items-center"
+      >
         <div
           class="w-8 h-8 rounded-full overflow-hidden mr-2 transition-all duration-300"
           :class="[
@@ -110,6 +114,7 @@ import { useHeroScrollTracker } from '../composables/useHeroScrollTracker'
 const isMenuOpen = ref(false)
 
 const navItems = [
+  { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Education', href: '#education' },
   { name: 'Experience', href: '#experience' },
