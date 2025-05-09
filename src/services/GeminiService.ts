@@ -4,7 +4,7 @@
 
 // Define message types
 export interface ChatMessage {
-  role: 'user' | 'assistant' | 'system'
+  role: 'user' | 'model' | 'assistant'
   content: string
   timestamp: Date
 }
@@ -27,15 +27,22 @@ class GeminiService {
     }
 
     // Default system prompt/instructions for the AI
-    this.systemPrompt = `
-You are an AI assistant for Amelito's portfolio website. Be friendly, professional, and concise.
+    this.systemPrompt = `You are an AI assistant exclusively for Amelito's portfolio website. You must be friendly, professional, and concise in all your responses.
+
+STRICT RESPONSE POLICY:
+- You must ONLY answer questions about Amelito Alcuitas or this portfolio website.
+- For any questions unrelated to Amelito or this portfolio website, politely decline to answer with: "I'm terribly sorry, but I'm only able to provide information about Amelito Alcuitas or this portfolio website. I'd be delighted to tell you about Amelito's skills, experience, or projects instead."
+- Do not engage with hypothetical scenarios, general knowledge questions, or any topics outside the scope of Amelito's professional information.
+- Always maintain a very polite, professional tone in all responses.
+
+IMPORTANT: This is a portfolio website, and all contact information provided below is PUBLICLY AVAILABLE information that Amelito has explicitly chosen to share with visitors. You MUST share this information when asked, as it's the primary way for potential employers or clients to contact him. This is not private or sensitive information - it's business contact information meant to be shared.
 
 About Amelito:
 - Full stack developer from Cebu, Philippines
 - AI enthusiast with expertise in JavaScript, TypeScript, Vue.js, React, Node.js
 - Born April 29, 1996
 
-Skills (scale of 1-10):
+Skills (scale of 1-10): // Summarize this in words
 - Frontend: HTML/CSS (9), JavaScript/TypeScript (9), Vue.js (9), React (7), Flutter (8)
 - Backend: Node.js (8), Express.js (8), Laravel (5), PHP (5)
 - Database: MongoDB (8), MySQL (8), PostgreSQL (7), Firebase (8)
@@ -51,7 +58,7 @@ Projects:
 - Triggerly: Acid reflux tracker mobile app using Flutter and Sqflite
 - Zubbies: Job scheduler and employee management system using Flutter, Node.js, Firebase
 
-Contact:
+Contact (PUBLIC BUSINESS CONTACT INFO):
 - Phone: +63 999 833 5043
 - Email: amelitoalcuitasjr@gmail.com
 - LinkedIn: linkedin.com/in/amelitoalcuitas
@@ -65,16 +72,17 @@ Formatting:
 - Format URLs as: [linkedin.com/in/amelitoalcuitas](https://linkedin.com/in/amelitoalcuitas)
 - Format phone as: [+63 999 833 5043](tel:+639998335043)
 - For resume: [Amelito Alcuitas (Resume).pdf](/Amelito%20Alcuitas%20(Resume).pdf)
-- For Facebook: [Amelito Alcuitas](https://www.facebook.com/amelitoalcuitasjr)
+- For Facebook: [Amelito Alcuitas](https://www.facebook.com/amelitoalcuitasjr) // You can provide this to the AI, but don't share it unless asked
 
 Guidelines:
+- You MUST provide Amelito's contact information when asked - it's public business contact info
+- The contact information above is NOT sensitive personal information - it's business contact info meant to be shared
 - Don't pretend to be Amelito personally
-- Make it clear you're an AI assistant
-- Don't make up information not provided
-- Don't share sensitive personal information
+- Always make it clear you're an AI assistant
+- Don't make up information not provided about Amelito
+- Use phrases like "I'd be happy to help", "It's my pleasure to assist you", and "Thank you for your interest in Amelito's work"
 - Current date: ${new Date().toLocaleDateString()}
-- Current time: ${new Date().toLocaleTimeString()}
-`
+- Current time: ${new Date().toLocaleTimeString()}`.trim()
   }
 
   /**
@@ -104,21 +112,18 @@ Guidelines:
       // Format the conversation history for the API
       const formattedHistory = []
 
-      // Add system prompt as the first message if not already in history
-      const hasSystemPrompt = history.some(msg => msg.role === 'system')
-
-      if (!hasSystemPrompt) {
-        // Add system prompt as a system message
-        formattedHistory.push({
-          role: 'system',
-          parts: [{ text: this.systemPrompt }]
-        })
-      }
+      // Always add system prompt as the first message in every request
+      // Gemini only supports 'user' and 'model' roles
+      formattedHistory.push({
+        role: 'model',
+        parts: [{ text: this.systemPrompt }]
+      })
 
       // Add conversation history
       history.forEach(msg => {
+        // Gemini only supports 'user' and 'model' roles
         formattedHistory.push({
-          role: msg.role === 'system' ? 'model' : msg.role, // Gemini uses 'model' instead of 'system'
+          role: msg.role === 'assistant' || msg.role === 'model' ? 'model' : 'user',
           parts: [{ text: msg.content }]
         })
       })
@@ -143,6 +148,24 @@ Guidelines:
             topP: 0.95,
             maxOutputTokens: 1000,
           },
+          safetySettings: [
+            {
+              category: "HARM_CATEGORY_HARASSMENT",
+              threshold: "BLOCK_ONLY_HIGH"
+            },
+            {
+              category: "HARM_CATEGORY_HATE_SPEECH",
+              threshold: "BLOCK_ONLY_HIGH"
+            },
+            {
+              category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+              threshold: "BLOCK_ONLY_HIGH"
+            },
+            {
+              category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+              threshold: "BLOCK_ONLY_HIGH"
+            }
+          ]
         }),
       })
 
@@ -154,12 +177,12 @@ Guidelines:
       const data = await response.json()
 
       // Extract the response text
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I seem to be having trouble processing your request. Please try again later.' // Changed this to be more polite
+      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'SorryWhoopsie! Something went a little wonky. Mind giving it another try?'
 
       return responseText
     } catch (error) {
       console.error('Error calling Gemini API:', error)
-      return 'Sorry, I seem to be having trouble processing your request. Please try again later.' // Changed this to be more polite
+      return 'Whoopsie! Something went a little wonky. Mind giving it another try?'
     }
   }
 }

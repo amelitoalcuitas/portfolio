@@ -46,16 +46,22 @@
     </transition>
 
     <!-- Chat Interface -->
-    <transition name="slide"> </transition>
+    <transition name="slide">
+      <ChatInterface v-if="isChatOpen" @close="closeChat" ref="chatInterface" />
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useBackToTopVisibility } from '@/composables/useBackToTopVisibility'
+import ChatInterface from '@/components/ChatInterface.vue'
 
 // Get the shared state for BackToTopButton visibility
 const { isBackToTopVisible } = useBackToTopVisibility()
+
+// Reference to the chat interface component
+const chatInterface = ref<InstanceType<typeof ChatInterface> | null>(null)
 
 // State to control chat visibility
 const isChatOpen = ref(false)
@@ -80,6 +86,11 @@ const handleEscKey = (event: KeyboardEvent) => {
 // Add event listener for ESC key
 onMounted(() => {
   window.addEventListener('keydown', handleEscKey)
+})
+
+// Clean up event listener
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleEscKey)
 })
 </script>
 
