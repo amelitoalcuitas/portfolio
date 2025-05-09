@@ -193,7 +193,7 @@ const loadChatHistory = (): ChatHistory => {
       const parsed = JSON.parse(savedHistory)
       // Convert string timestamps back to Date objects
       if (parsed.messages && Array.isArray(parsed.messages)) {
-        parsed.messages.forEach((msg) => {
+        parsed.messages.forEach((msg: ChatMessage) => {
           if (msg.timestamp) {
             msg.timestamp = new Date(msg.timestamp)
           }
