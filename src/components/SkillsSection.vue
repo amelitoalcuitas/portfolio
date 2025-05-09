@@ -1,9 +1,5 @@
 <template>
-  <section
-    id="skills"
-    class="py-20 px-4 min-h-screen flex items-center"
-    ref="sectionRef"
-  >
+  <section id="skills" class="py-20 px-4 min-h-screen flex items-center" ref="sectionRef">
     <div class="container mx-auto">
       <h2
         class="text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 transform"
@@ -217,9 +213,9 @@ const databaseSkills = [
 
 const toolsSkills = [
   { name: 'Git', level: 'Advanced', percentage: '90%' },
-  { name: 'Docker', level: 'Intermediate', percentage: '70%' },
-  { name: 'Postman', level: 'Advanced', percentage: '85%' },
-  { name: 'VS Code', level: 'Expert', percentage: '95%' },
+  { name: 'Docker', level: 'Basic', percentage: '50%' },
+  { name: 'Postman', level: 'Advanced', percentage: '60%' },
+  { name: 'VSCode', level: 'Expert', percentage: '95%' },
   { name: 'AI Tools', level: 'Advanced', percentage: '90%' },
 ]
 
