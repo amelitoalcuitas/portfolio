@@ -46,16 +46,13 @@
     </transition>
 
     <!-- Chat Interface -->
-    <transition name="slide">
-      <ChatInterface v-if="isChatOpen" :isOpen="isChatOpen" @close="closeChat" />
-    </transition>
+    <transition name="slide"> </transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useBackToTopVisibility } from '@/composables/useBackToTopVisibility'
-import ChatInterface from '@/components/ChatInterface.vue'
 
 // Get the shared state for BackToTopButton visibility
 const { isBackToTopVisible } = useBackToTopVisibility()
