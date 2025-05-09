@@ -1,9 +1,5 @@
 <template>
-  <section
-    id="about"
-    class="py-20 px-4 min-h-screen flex items-center"
-    ref="sectionRef"
-  >
+  <section id="about" class="py-20 px-4 min-h-screen flex items-center" ref="sectionRef">
     <div class="container mx-auto w-full">
       <h2
         class="text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 transform"
@@ -36,11 +32,12 @@
               Who I Am
             </h3>
             <p class="text-gray-300">
-              Hey there! I'm <span class="text-blue-500 font-bold"> Amelito N. Alcuitas Jr. </span>, but you can call me <span class="text-blue-500 font-bold"> Amelitz </span> or <span class="text-blue-500 font-bold"> Mel </span>. 
-              I'm a passionate Full Stack Developer with a strong focus on creating efficient,
-              scalable, and user-friendly web applications. With over 5 years of experience in the
-              industry, I've developed a deep understanding of both front-end and back-end
-              technologies.
+              Hey there! I'm <span class="text-blue-500 font-bold"> Amelito N. Alcuitas Jr. </span>,
+              but you can call me <span class="text-blue-500 font-bold"> Amelitz </span> or
+              <span class="text-blue-500 font-bold"> Mel </span>. I'm a passionate Full Stack
+              Developer and AI enthusiast with a strong focus on creating efficient, scalable, and
+              user-friendly web applications. With over 5 years of experience in the industry, I've
+              developed a deep understanding of both front-end and back-end technologies.
             </p>
           </div>
 

@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 px-6 shadow-lg"
-  >
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 px-6 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
       <!-- Logo or Site Title -->
       <a href="#" class="text-white font-semibold flex items-center">
@@ -15,7 +13,7 @@
           <img src="/me.jpg" alt="Amelito N. Alcuitas Jr." class="w-full h-full object-cover" />
         </div>
         <span
-          class="text-xl transition-all duration-300"
+          class="text-xl transition-all duration-300 text-blue-500"
           :class="[
             isHeroHalfwayScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
             'transform',

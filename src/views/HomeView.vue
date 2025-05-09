@@ -7,11 +7,17 @@
     <div class="relative z-10">
       <SiteNavigation />
       <HeroSection />
+      <SectionDivider />
       <AboutSection />
+      <SectionDividerAlt />
       <EducationSection />
+      <SectionDivider />
       <ExperienceSection />
+      <SectionDividerAlt />
       <ProjectsSection />
+      <SectionDivider />
       <SkillsSection />
+      <SectionDividerAlt />
       <ContactSection />
       <FooterSection />
     </div>
@@ -29,4 +35,6 @@ import SkillsSection from '@/components/SkillsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import FooterSection from '@/components/FooterSection.vue'
 import SimpleParticleBackground from '@/components/SimpleParticleBackground.vue'
+import SectionDivider from '@/components/SectionDivider.vue'
+import SectionDividerAlt from '@/components/SectionDividerAlt.vue'
 </script>

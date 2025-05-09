@@ -26,15 +26,19 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useBackToTopVisibility } from '@/composables/useBackToTopVisibility'
 
-// State to control button visibility
+// Get the shared state
+const { isBackToTopVisible } = useBackToTopVisibility()
+
+// Local state to control button visibility
 const showButton = ref(false)
 
 // Function to scroll to top
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
+    behavior: 'smooth',
   })
 }
 
@@ -42,6 +46,8 @@ const scrollToTop = () => {
 const checkScroll = () => {
   // Show button when scrolled down 300px from the top
   showButton.value = window.scrollY > 300
+  // Update the shared state
+  isBackToTopVisible.value = showButton.value
 }
 
 // Set up scroll event listener
@@ -60,7 +66,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
 }
 .fade-enter-from,
 .fade-leave-to {

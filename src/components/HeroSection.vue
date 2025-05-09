@@ -8,14 +8,10 @@
     >
       <!-- Text Content - Left Side on Desktop, Bottom on Mobile -->
       <div class="md:w-1/2 text-center md:text-right mt-10 md:mt-0">
-        <h1
-          class="text-4xl md:text-6xl mb-4 font-heading transition-all duration-700 transform"
-          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'"
-        >
-          <span class="block sm:inline text-gray-300">Hi, my </span>
-          <span class="block sm:inline"
-            >name is <span class="text-blue-500 font-bold">Amelito</span>.</span
-          >
+        <h1 class="text-4xl md:text-6xl mb-4 font-heading">
+          <span class="typewriter-container">
+            <span class="typewriter-text" ref="typewriterText"></span>
+          </span>
         </h1>
         <h2
           class="text-xl md:text-2xl text-gray-300 mb-6 font-heading transition-all duration-700 transform"
@@ -78,14 +74,13 @@
             <div class="tooltip-text">LinkedIn</div>
           </div>
 
-          <!-- Resume Download Button -->
+          <!-- Resume Button -->
           <div class="relative group">
             <a
-              href="/Amelito N. Alcuitas Jr. (Resume).pdf"
+              href="/Amelito Alcuitas (Resume).pdf"
               target="_blank"
               class="p-3 bg-gray-800 hover:bg-blue-600 text-white rounded-full transition-colors duration-300 flex items-center justify-center"
-              aria-label="Download Resume"
-              download
+              aria-label="View Resume"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +98,7 @@
               </svg>
             </a>
             <!-- Tooltip -->
-            <div class="tooltip-text">Download Resume</div>
+            <div class="tooltip-text">View Resume</div>
           </div>
         </div>
       </div>
@@ -175,14 +170,78 @@ import { scrollToSection } from '../utils/scrollUtils'
 import { useHeroScrollTracker } from '../composables/useHeroScrollTracker'
 
 const sectionRef = ref<HTMLElement | null>(null)
+const typewriterText = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
 // Use the hero scroll tracker composable
 const { isHeroHalfwayScrolled } = useHeroScrollTracker()
 
+// Typewriter effect function
+const typeWriter = (
+  textParts: string[],
+  currentPart: number,
+  currentChar: number,
+  fnCallback?: () => void,
+) => {
+  // Check if the element exists
+  if (!typewriterText.value) return
+
+  // Set a speed for the typing effect (in milliseconds)
+  const speed = 100
+
+  // Get the current part we're typing
+  const part = textParts[currentPart]
+
+  if (currentChar < part.length) {
+    // We're still typing the current part
+    if (currentPart === 0) {
+      // First part (regular text)
+      typewriterText.value.innerHTML = part.substring(0, currentChar + 1)
+    } else if (currentPart === 1) {
+      // Second part (name with styling)
+      typewriterText.value.innerHTML =
+        textParts[0] +
+        `<span class="text-blue-500 font-bold">${part.substring(0, currentChar + 1)}</span>`
+    } else if (currentPart === 2) {
+      // Third part (period)
+      typewriterText.value.innerHTML =
+        textParts[0] +
+        `<span class="text-blue-500 font-bold">${textParts[1]}</span>` +
+        part.substring(0, currentChar + 1)
+    }
+
+    // Call this function again after a delay to type the next character
+    setTimeout(() => {
+      typeWriter(textParts, currentPart, currentChar + 1, fnCallback)
+    }, speed)
+  } else if (currentPart < textParts.length - 1) {
+    // Move to the next part
+    setTimeout(() => {
+      typeWriter(textParts, currentPart + 1, 0, fnCallback)
+    }, speed)
+  } else if (typeof fnCallback === 'function') {
+    // All parts are done, call the callback
+    setTimeout(fnCallback, 700)
+  }
+}
+
+// Start the typewriter animation
+const startTypewriter = () => {
+  // Break the text into parts to handle styling separately
+  const textParts = ['Hi, my name is ', 'Amelito', '.']
+
+  // Start typing with the first part, first character
+  typeWriter(textParts, 0, 0)
+}
+
 onMounted(() => {
   // Set isVisible to true immediately for better user experience on initial load
   isVisible.value = true
+
+  // Start the typewriter effect after a short delay
+  setTimeout(() => {
+    startTypewriter()
+  }, 500)
 
   // Create an Intersection Observer to detect when the section is visible or hidden
   const observer = new IntersectionObserver(
@@ -316,6 +375,32 @@ onMounted(() => {
   100% {
     transform: rotate(3deg) scale(1);
     opacity: 1;
+  }
+}
+
+/* Typewriter styles */
+.typewriter-container {
+  display: inline-block;
+}
+
+.typewriter-text {
+  display: inline-block;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  color: #3b82f6; /* blue-500 */
+  font-weight: bold;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 </style>
