@@ -1,7 +1,7 @@
 <template>
   <div
-    class="chat-interface fixed bottom-20 right-6 w-96 md:w-[450px] h-[450px] bg-gray-800 rounded-lg shadow-xl overflow-hidden z-30 flex flex-col"
-    :class="{ 'right-20': isBackToTopVisible }"
+    class="chat-interface fixed bottom-24 sm:bottom-20 right-6 w-[90%] sm:w-96 md:w-[450px] h-[450px] max-h-[75vh] max-w-[90vw] bg-gray-800 rounded-lg shadow-xl overflow-hidden z-30 flex flex-col"
+    :class="{ 'right-6 left-6 w-auto': isMobileScreen }"
   >
     <!-- Chat Header -->
     <div
@@ -75,7 +75,7 @@
     <div ref="messagesContainer" class="chat-messages flex-1 p-3 overflow-y-auto space-y-3">
       <!-- Welcome Message -->
       <div v-if="chatHistory.messages.length === 0" class="chat-message assistant-message">
-        <div class="message-content p-3 bg-gray-700 rounded-lg mr-16 md:mr-24">
+        <div class="message-content p-3 bg-gray-700 rounded-lg mr-8 sm:mr-16 md:mr-24">
           <p
             v-html="
               formatMarkdown(
@@ -98,8 +98,8 @@
           <div
             class="message-content p-3 rounded-lg"
             :class="{
-              'bg-blue-600 ml-16 md:ml-24': message.role === 'user',
-              'bg-gray-700 mr-16 md:mr-24':
+              'bg-blue-600 ml-8 sm:ml-16 md:ml-24': message.role === 'user',
+              'bg-gray-700 mr-8 sm:mr-16 md:mr-24':
                 message.role === 'model' || message.role === 'assistant',
             }"
           >
@@ -114,7 +114,7 @@
 
       <!-- Loading Indicator -->
       <div v-if="isLoading" class="chat-message assistant-message">
-        <div class="message-content p-3 bg-gray-700 rounded-lg mr-16 md:mr-24">
+        <div class="message-content p-3 bg-gray-700 rounded-lg mr-8 sm:mr-16 md:mr-24">
           <div class="flex space-x-2 items-center">
             <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
             <div
@@ -167,20 +167,17 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
-import { useBackToTopVisibility } from '@/composables/useBackToTopVisibility'
 import { geminiService, type ChatMessage, type ChatHistory } from '@/services/GeminiService'
 import { formatMarkdown, extractNavigationHashLink } from '@/utils/markdownFormatter'
 
 // Define props and emits
 defineEmits(['close'])
 
-// Get the shared state for BackToTopButton visibility
-const { isBackToTopVisible } = useBackToTopVisibility()
-
 // Chat state
 const userMessage = ref('')
 const isLoading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
+const isMobileScreen = ref(window.innerWidth < 640) // Check if screen is smaller than sm breakpoint
 
 // Local storage key for chat history
 const CHAT_HISTORY_STORAGE_KEY = 'portfolio_chat_history'
@@ -332,16 +329,28 @@ defineExpose({
   navigateToSection,
 })
 
-// Scroll to bottom on mount
+// Function to update mobile screen status
+const updateMobileScreenStatus = () => {
+  isMobileScreen.value = window.innerWidth < 640
+}
+
+// Scroll to bottom on mount and set up resize listener
 onMounted(() => {
   if (messagesContainer.value) {
     messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
   }
+
+  // Add resize event listener
+  window.addEventListener('resize', updateMobileScreenStatus)
+
+  // Initial check
+  updateMobileScreenStatus()
 })
 
-// Save chat history before unmounting
+// Save chat history and clean up event listeners before unmounting
 onBeforeUnmount(() => {
   saveChatHistory()
+  window.removeEventListener('resize', updateMobileScreenStatus)
 })
 </script>
 
