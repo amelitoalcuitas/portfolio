@@ -188,7 +188,7 @@ const typeWriter = (
   if (!typewriterText.value) return
 
   // Set a speed for the typing effect (in milliseconds)
-  const speed = 100
+  const speed = 50
 
   // Get the current part we're typing
   const part = textParts[currentPart]

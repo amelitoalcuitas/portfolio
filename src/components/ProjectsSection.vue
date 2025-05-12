@@ -231,12 +231,25 @@ const getProjectImages = (projectFolder: string): string[] => {
       images.push(`/projects/zubbies/${i}`)
     }
   }
+  // Shortly - 6 PNG images
+  else if (projectFolder === 'shortly') {
+    for (let i = 1; i <= 6; i++) {
+      images.push(`/projects/shortly/${i}.png`)
+    }
+  }
 
   return images
 }
 
 // Project data
 const projects = [
+  {
+    title: 'Shortly',
+    description:
+      'A URL shortener app with a minimalistic design. Features include URL clicks count tracking, custom code/slug creation, and expiration settings for links.',
+    images: getProjectImages('shortly'),
+    technologies: ['React.js', 'Knex.js', 'PostgreSQL', 'Redis'],
+  },
   {
     title: 'Ordering Portal',
     description:
