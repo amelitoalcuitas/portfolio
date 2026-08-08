@@ -116,35 +116,39 @@ If the AI assistant is not working correctly, check the following:
 2. Check the browser console for any error messages
 3. Verify that the system prompt is properly formatted
 4. Free models can be rate-limited or occasionally unavailable — if responses fail intermittently, consider pinning a specific free model (see "Switching Models" above) instead of the `openrouter/free` router
+5. If a message looks broken (literal `**`/`[...]` characters, or a "navigate you there" reply that doesn't actually scroll), see "Navigation Links" below — it's usually the model mis-formatting a link, not a bug in the chat UI
+6. Chat messages are cached as already-rendered HTML in `localStorage` (`portfolio_chat_history`) — after changing the system prompt or `formatMarkdown()`, clear the chat history (the ⟲ icon in the chat header) before testing, otherwise you'll keep seeing old cached output
 
-## HTML Formatting in Responses
+## Markdown Formatting in Responses
 
-The chat interface supports HTML formatting in AI responses. This allows the AI to provide more interactive and visually appealing responses, such as:
+The system prompt instructs the AI to **prioritize markdown over raw HTML** (see the `Formatting` block in `OpenRouterService.ts`). The flow is:
 
-- Clickable links for websites, email addresses, and phone numbers (styled with an accent color and underline)
-- Formatted text (bold, italic, etc.)
-- Lists and other structured content
+1. The model responds with markdown (`**bold**`, `[text](url)`, lists, etc.)
+2. `formatMarkdown()` in `src/utils/markdownFormatter.ts` runs the response through `marked` to convert it to HTML, then sanitizes it with `DOMPurify`
+3. The result is rendered with `v-html` in `ChatInterface.vue`
 
-The styling for links is already configured in the ChatInterface.vue component, making them stand out with an accent color and underline for better visibility.
+Links, bold text, and lists all come from markdown syntax — the AI is explicitly told *not* to write raw `<a>`/`<strong>` tags itself.
 
-### Example HTML Formatting Instructions
+### Link Formatting Rules
 
-Here's an example of how to instruct the AI to format its responses with HTML:
+Every link the AI writes must be `[text](url)` with **no space or line break between `]` and `(`** — markdown only recognizes a link when they're directly adjacent. Some free models occasionally insert a line break there anyway, so `formatMarkdown()` also defensively closes that gap (and unescapes stray `\*`/`\[` backslash-escapes) before parsing, as a safety net on top of the prompt instruction.
 
 ```typescript
-this.systemPrompt = `
-...
-
-Formatting Instructions:
-- When mentioning email addresses, format them as clickable mailto links: <a href="mailto:example@example.com">example@example.com</a>
-- When mentioning websites or URLs, format them as clickable links: <a href="https://example.com" target="_blank">example.com</a>
-- When mentioning phone numbers, format them as clickable tel links: <a href="tel:+1234567890">+1 (234) 567-890</a>
-- Always include target="_blank" for external links to open in a new tab
-- Links will automatically appear styled with an accent color and underline for better visibility
-- Use <strong> for emphasis and <em> for subtle emphasis
-- Use <ul> and <li> for lists
-`
+Formatting:
+- Prioritize markdown formatting over HTML
+- Use markdown for emphasis (**bold**, *italic*), lists, and headers
+- Format emails as: [amelitoalcuitasjr@gmail.com](mailto:amelitoalcuitasjr@gmail.com)
+- Format phone as: [+63 999 833 5043](tel:+639998335043)
+- Every markdown link must be written as [text](url) with no space or line break between ] and (
 ```
+
+### Navigation Links
+
+The system prompt gives the AI a list of section hash anchors (`#home`, `#about`, `#contact`, etc.) and tells it to offer navigation using a markdown link with that **bare hash anchor** as the URL, e.g. `[Contact](#contact)`.
+
+**Watch out for:** weaker free models occasionally get this wrong and write an absolute path instead — `[Contact](/contact)` — or fall back to raw HTML like `<a href="/contact">#contact</a>`, despite being told not to. Both are broken: the leading `/` makes it a page navigation instead of an in-page scroll, and `extractNavigationHashLink()` (in `markdownFormatter.ts`) specifically looks for an `href="#..."` pattern to trigger the auto-scroll, so a `/contact` link is silently ignored — no error, it just quietly doesn't navigate.
+
+If you notice this happening, the fix is to make the `Navigation` block in the system prompt (`OpenRouterService.ts`) even more explicit/repetitive about the `#section`-only rule, or to pin a stronger model instead of the `openrouter/free` router (see "Switching Models" above) — smaller free models are more prone to this kind of instruction-following slip.
 
 ## Best Practices for System Prompts
 
