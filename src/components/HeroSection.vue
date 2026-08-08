@@ -3,11 +3,7 @@
     id="home"
     class="relative min-h-screen flex items-center py-24 px-6 overflow-hidden"
     ref="sectionRef"
-    @mousemove="handleMouseMove"
   >
-    <!-- Cursor-follow spotlight, hero only -->
-    <div class="pointer-events-none absolute inset-0 z-0 hidden md:block" :style="spotlightStyle"></div>
-
     <div class="container mx-auto relative z-10 grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
       <!-- Text content -->
       <div class="md:col-span-6 order-2 md:order-1">
@@ -167,24 +163,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { scrollToSection } from '../utils/scrollUtils'
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
-const mouseX = ref(50)
-const mouseY = ref(50)
-
-const spotlightStyle = computed(() => ({
-  background: `radial-gradient(38rem 38rem at ${mouseX.value}% ${mouseY.value}%, rgba(139, 92, 246, 0.08), transparent 60%)`,
-}))
-
-const handleMouseMove = (e: MouseEvent) => {
-  if (!sectionRef.value) return
-  const rect = sectionRef.value.getBoundingClientRect()
-  mouseX.value = ((e.clientX - rect.left) / rect.width) * 100
-  mouseY.value = ((e.clientY - rect.top) / rect.height) * 100
-}
 
 onMounted(() => {
   requestAnimationFrame(() => {

@@ -16,9 +16,14 @@ export function formatMarkdown(text: string): string {
   })
 
   try {
+    // Some models over-escape markdown punctuation (e.g. \*\*bold\*\* or
+    // \[text\]\(url\)), which marked() would otherwise render as literal
+    // backslashes/punctuation instead of applying the intended formatting.
+    const unescaped = text.replace(/\\([*_[\]()~`>#+\-.!])/g, '$1')
+
     // Use marked.parse which returns string | Promise<string>
     // For our simple implementation, we'll use a simpler approach
-    const rawHtml = marked(text) as string
+    const rawHtml = marked(unescaped) as string
 
     // Sanitize the HTML to prevent XSS attacks
     return DOMPurify.sanitize(rawHtml)
