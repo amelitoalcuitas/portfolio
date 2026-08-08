@@ -1,16 +1,16 @@
 <template>
   <div
-    class="chat-interface fixed bottom-24 sm:bottom-20 right-6 w-[90%] sm:w-96 md:w-[450px] h-[450px] max-h-[75vh] max-w-[90vw] bg-gray-800 rounded-lg shadow-xl overflow-hidden z-30 flex flex-col"
+    class="chat-interface fixed bottom-28 sm:bottom-24 right-6 w-[90%] sm:w-96 md:w-[450px] h-[450px] max-h-[75vh] max-w-[90vw] bg-ink-800 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-30 flex flex-col"
     :class="{ 'right-6 left-6 w-auto': isMobileScreen }"
   >
     <!-- Chat Header -->
     <div
-      class="chat-header bg-blue-600 p-3 flex justify-between items-center border-b border-gray-700"
+      class="chat-header bg-ink-900 p-4 flex justify-between items-center border-b border-white/[0.08]"
     >
       <div class="flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 mr-2"
+          class="h-5 w-5 mr-2 text-accent-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -18,17 +18,17 @@
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            stroke-width="2"
+            stroke-width="1.5"
             d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
           />
         </svg>
-        <h3 class="font-medium text-white">Chat with my AI Assistant</h3>
+        <h3 class="font-medium text-mist-100 text-sm">Chat with my AI Assistant</h3>
       </div>
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-3">
         <!-- Clear Chat History Button -->
         <button
           @click="clearChatHistory"
-          class="text-white hover:text-gray-200 focus:outline-none cursor-pointer"
+          class="text-mist-400 hover:text-mist-100 focus:outline-none cursor-pointer"
           aria-label="Clear chat history"
           title="Clear chat history"
         >
@@ -42,7 +42,7 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
+              stroke-width="1.5"
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
@@ -50,7 +50,7 @@
         <!-- Close Button -->
         <button
           @click="$emit('close')"
-          class="text-white hover:text-gray-200 focus:outline-none cursor-pointer"
+          class="text-mist-400 hover:text-mist-100 focus:outline-none cursor-pointer"
           aria-label="Close chat"
         >
           <svg
@@ -72,10 +72,13 @@
     </div>
 
     <!-- Chat Messages -->
-    <div ref="messagesContainer" class="chat-messages flex-1 p-3 overflow-y-auto space-y-3">
+    <div
+      ref="messagesContainer"
+      class="chat-messages bg-ink-800 flex-1 p-3 overflow-y-auto space-y-3"
+    >
       <!-- Welcome Message -->
       <div v-if="chatHistory.messages.length === 0" class="chat-message assistant-message">
-        <div class="message-content p-3 bg-gray-700 rounded-lg mr-8 sm:mr-16 md:mr-24">
+        <div class="message-content p-3 bg-ink-700 rounded-xl mr-8 sm:mr-16 md:mr-24">
           <p
             v-html="
               formatMarkdown(
@@ -92,21 +95,17 @@
           class="chat-message"
           :class="{
             'user-message': message.role === 'user',
-            'assistant-message': message.role === 'model' || message.role === 'assistant',
+            'assistant-message': message.role === 'assistant',
           }"
         >
           <div
-            class="message-content p-3 rounded-lg"
+            class="message-content p-3 rounded-xl"
             :class="{
-              'bg-blue-600 ml-8 sm:ml-16 md:ml-24': message.role === 'user',
-              'bg-gray-700 mr-8 sm:mr-16 md:mr-24':
-                message.role === 'model' || message.role === 'assistant',
+              'bg-accent-500/20 border border-accent-500/30 ml-8 sm:ml-16 md:ml-24': message.role === 'user',
+              'bg-ink-700 mr-8 sm:mr-16 md:mr-24': message.role === 'assistant',
             }"
           >
-            <p
-              v-if="message.role === 'model' || message.role === 'assistant'"
-              v-html="message.content"
-            ></p>
+            <p v-if="message.role === 'assistant'" v-html="message.content"></p>
             <p v-else>{{ message.content }}</p>
           </div>
         </div>
@@ -114,15 +113,15 @@
 
       <!-- Loading Indicator -->
       <div v-if="isLoading" class="chat-message assistant-message">
-        <div class="message-content p-3 bg-gray-700 rounded-lg mr-8 sm:mr-16 md:mr-24">
+        <div class="message-content p-3 bg-ink-700 rounded-xl mr-8 sm:mr-16 md:mr-24">
           <div class="flex space-x-2 items-center">
-            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-accent-400 rounded-full animate-bounce"></div>
             <div
-              class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+              class="w-2 h-2 bg-accent-400 rounded-full animate-bounce"
               style="animation-delay: 0.2s"
             ></div>
             <div
-              class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+              class="w-2 h-2 bg-accent-400 rounded-full animate-bounce"
               style="animation-delay: 0.4s"
             ></div>
           </div>
@@ -131,18 +130,18 @@
     </div>
 
     <!-- Chat Input -->
-    <div class="chat-input p-3 bg-gray-700">
+    <div class="chat-input bg-ink-900 p-3 border-t border-white/[0.08]">
       <form @submit.prevent="sendMessage" class="flex">
         <input
           v-model="userMessage"
           type="text"
           placeholder="Type your message..."
-          class="flex-1 p-3 rounded-l-lg bg-gray-600 text-white placeholder-gray-400 focus:outline-none"
+          class="flex-1 p-3 rounded-l-xl bg-ink-700 text-mist-100 placeholder-mist-400 focus:outline-none"
           :disabled="isLoading"
         />
         <button
           type="submit"
-          class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-accent-500 hover:bg-accent-400 text-ink-950 p-3 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-accent-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="isLoading || !userMessage.trim()"
         >
           <svg
@@ -167,7 +166,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
-import { geminiService, type ChatMessage, type ChatHistory } from '@/services/GeminiService'
+import { openRouterService, type ChatMessage, type ChatHistory } from '@/services/OpenRouterService'
 import { formatMarkdown, extractNavigationHashLink } from '@/utils/markdownFormatter'
 
 // Define props and emits
@@ -228,12 +227,12 @@ const sendMessage = async () => {
   isLoading.value = true
 
   try {
-    // Get response from Gemini API
-    const response = await geminiService.sendMessage(sentMessage, chatHistory.messages)
+    // Get response from OpenRouter's free model router
+    const response = await openRouterService.sendMessage(sentMessage, chatHistory.messages)
 
     // Format the response with markdown and add to chat history
     const assistantMsg: ChatMessage = {
-      role: 'model',
+      role: 'assistant',
       content: formatMarkdown(response),
       timestamp: new Date(),
     }
@@ -243,7 +242,7 @@ const sendMessage = async () => {
 
     // Add error message to chat history with markdown formatting
     const errorMsg: ChatMessage = {
-      role: 'model',
+      role: 'assistant',
       content: formatMarkdown('**Error:** Sorry, I encountered an error. Please try again later.'),
       timestamp: new Date(),
     }
@@ -256,7 +255,7 @@ const sendMessage = async () => {
 
 // Function to update system prompt
 const updateSystemPrompt = (newPrompt: string) => {
-  geminiService.setSystemPrompt(newPrompt)
+  openRouterService.setSystemPrompt(newPrompt)
 }
 
 // Function to clear chat history
@@ -307,7 +306,7 @@ watch(
 
     // Check if the latest message is from the assistant and contains a navigation link
     const latestMessage = chatHistory.messages[chatHistory.messages.length - 1]
-    if (latestMessage && (latestMessage.role === 'model' || latestMessage.role === 'assistant')) {
+    if (latestMessage && latestMessage.role === 'assistant') {
       const hashLink = extractNavigationHashLink(latestMessage.content)
       if (hashLink) {
         // Wait a moment before navigating to ensure the UI has updated
@@ -357,7 +356,7 @@ onBeforeUnmount(() => {
 <style>
 /* Non-scoped styles for dynamically inserted content via v-html */
 .message-content a {
-  color: #3b82f6 !important; /* Bright blue color for links (Tailwind blue-500) */
+  color: #a78bfa !important;
   text-decoration: underline !important;
   text-decoration-thickness: 1px !important;
   text-underline-offset: 2px !important;
@@ -366,7 +365,7 @@ onBeforeUnmount(() => {
 }
 
 .message-content a:hover {
-  color: #2563eb !important; /* Darker blue on hover (Tailwind blue-600) */
+  color: #8b5cf6 !important;
   text-decoration: underline !important;
   text-decoration-thickness: 2px !important;
 }
@@ -407,7 +406,7 @@ onBeforeUnmount(() => {
 
 /* Style links in chat messages (for non-v-html content) */
 .chat-message a {
-  color: #3b82f6; /* Bright blue color for links (Tailwind blue-500) */
+  color: #a78bfa;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
@@ -416,7 +415,7 @@ onBeforeUnmount(() => {
 }
 
 .chat-message a:hover {
-  color: #2563eb; /* Darker blue on hover (Tailwind blue-600) */
+  color: #8b5cf6;
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }

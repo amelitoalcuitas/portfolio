@@ -14,12 +14,11 @@ export function useHeroScrollTracker() {
     const heroSection = document.querySelector('section:first-of-type')
 
     if (heroSection) {
-      const heroRect = heroSection.getBoundingClientRect()
-      const heroHeight = heroRect.height
-      const heroTop = heroRect.top
+      const heroTop = heroSection.getBoundingClientRect().top
 
-      // Check if hero section is halfway scrolled (top is at -50% of its height)
-      if (heroTop <= -heroHeight / 3) {
+      // Trigger the nav's solid/blurred state almost as soon as scrolling starts,
+      // rather than waiting for a large fraction of the hero to scroll past.
+      if (heroTop <= -40) {
         isHeroHalfwayScrolled.value = true
       } else {
         isHeroHalfwayScrolled.value = false

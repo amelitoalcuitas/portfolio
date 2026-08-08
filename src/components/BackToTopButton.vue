@@ -3,7 +3,7 @@
     <button
       v-if="showButton"
       @click="scrollToTop"
-      class="cursor-pointer fixed bottom-6 right-6 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 z-40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      class="cursor-pointer fixed bottom-6 right-6 p-3 bg-ink-800/60 backdrop-blur-md hover:bg-accent-500 text-mist-100 border border-white/10 hover:border-accent-400 rounded-full shadow-lg shadow-black/40 transition-all duration-300 z-40 focus:outline-none focus:ring-2 focus:ring-accent-500/50"
       aria-label="Back to top"
     >
       <svg

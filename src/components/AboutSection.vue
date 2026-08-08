@@ -1,194 +1,66 @@
 <template>
-  <section id="about" class="py-20 px-4 min-h-screen flex items-center" ref="sectionRef">
-    <div class="container mx-auto w-full">
+  <section id="about" class="relative py-32 px-6" ref="target">
+    <div class="container mx-auto">
+      <p class="section-eyebrow mb-4 reveal" :class="{ 'is-visible': visible }">01 &mdash; About</p>
       <h2
-        class="text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 transform"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'"
+        class="section-heading text-4xl md:text-6xl font-semibold mb-16 reveal"
+        :class="{ 'is-visible': visible }"
       >
-        About <span class="text-blue-500">Me</span>
+        Who I <span class="italic text-accent-400">am</span>
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div class="space-y-6">
-          <div
-            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
-            :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
+        <!-- Pull-quote intro -->
+        <div class="md:col-span-7">
+          <p
+            class="font-heading text-2xl md:text-3xl leading-snug text-mist-100 reveal"
+            :class="{ 'is-visible': visible }"
+            style="transition-delay: 100ms"
           >
-            <h3 class="text-xl font-semibold mb-4 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 mr-2 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              Who I Am
-            </h3>
-            <p class="text-gray-300">
-              Hey there! I'm <span class="text-blue-500 font-bold"> Amelito N. Alcuitas Jr. </span>,
-              but you can call me <span class="text-blue-500 font-bold"> Amelitz </span> or
-              <span class="text-blue-500 font-bold"> Mel </span>. I'm a passionate Full Stack
-              Developer and AI enthusiast with a strong focus on creating efficient, scalable, and
-              user-friendly web applications. With over 5 years of experience in the industry, I've
-              developed a deep understanding of both front-end and back-end technologies.
-            </p>
-          </div>
+            I'm <span class="text-accent-400">Amelito N. Alcuitas Jr.</span> &mdash; friends call
+            me <span class="italic">Amelitz</span> or <span class="italic">Mel</span>. A full
+            stack developer and AI enthusiast focused on building efficient, scalable,
+            user-friendly web applications.
+          </p>
+          <p
+            class="mt-6 text-mist-400 leading-relaxed reveal"
+            :class="{ 'is-visible': visible }"
+            style="transition-delay: 200ms"
+          >
+            I believe in writing clean, maintainable code that solves real problems &mdash;
+            balancing technical excellence with user experience and business goals. I'm based in
+            Cebu City, Philippines, and work remotely with clients and teams around the world.
+          </p>
 
-          <div
-            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
-            :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-          >
-            <h3 class="text-xl font-semibold mb-4 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 mr-2 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-              My Approach
-            </h3>
-            <p class="text-gray-300">
-              I believe in writing clean, maintainable code that solves real problems. My approach
-              combines technical excellence with a focus on user experience and business goals. I'm
-              constantly learning and adapting to new technologies and methodologies.
-            </p>
-          </div>
+          <ul class="mt-10 space-y-3">
+            <li
+              v-for="(item, index) in whatIDo"
+              :key="item"
+              class="flex items-start gap-3 text-mist-200 reveal"
+              :class="{ 'is-visible': visible }"
+              :style="{ transitionDelay: `${300 + index * 80}ms` }"
+            >
+              <span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent-400 flex-shrink-0"></span>
+              {{ item }}
+            </li>
+          </ul>
         </div>
 
-        <div class="space-y-6">
+        <!-- Metrics strip -->
+        <div class="md:col-span-5 flex flex-col justify-center gap-8 md:border-l md:border-white/[0.08] md:pl-16">
           <div
-            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
-            :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+            v-for="(metric, index) in metrics"
+            :key="metric.label"
+            class="reveal"
+            :class="{ 'is-visible': visible }"
+            :style="{ transitionDelay: `${400 + index * 100}ms` }"
           >
-            <h3 class="text-xl font-semibold mb-4 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 mr-2 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              What I Do
-            </h3>
-            <ul class="text-gray-300 space-y-2">
-              <li class="flex items-start">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mr-2 text-green-500 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Develop full-stack web and mobile applications
-              </li>
-              <li class="flex items-start">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mr-2 text-green-500 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Optimize application performance and user experience
-              </li>
-              <li class="flex items-start">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mr-2 text-green-500 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Collaborate with teams to deliver high-quality software
-              </li>
-              <li class="flex items-start">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mr-2 text-green-500 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Integrate third-party APIs and services
-              </li>
-            </ul>
-          </div>
-
-          <div
-            class="bg-gray-800 p-6 rounded-lg shadow-lg transition-all duration-700 transform hover:scale-105"
-            :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-          >
-            <h3 class="text-xl font-semibold mb-4 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 mr-2 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                />
-              </svg>
-              Where I'm Based
-            </h3>
-            <p class="text-gray-300">
-              I'm currently based in Cebu City, Philippines, but I work remotely with clients and
-              teams from around the world.
-            </p>
+            <div class="font-heading text-5xl md:text-6xl font-semibold text-gradient leading-none">
+              {{ metric.value }}
+            </div>
+            <div class="mt-2 text-sm text-mist-400 uppercase tracking-wide font-mono">
+              {{ metric.label }}
+            </div>
           </div>
         </div>
       </div>
@@ -197,36 +69,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { useReveal } from '@/composables/useReveal'
 
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
+const { target, visible } = useReveal()
 
-onMounted(() => {
-  // Create an Intersection Observer to detect when the section is visible or hidden
-  const observer = new IntersectionObserver(
-    (entries) => {
-      // Check if the section is intersecting with the viewport
-      if (entries[0].isIntersecting) {
-        isVisible.value = true
-      }
-    },
-    {
-      // Trigger when at least 20% of the element is visible
-      threshold: 0.2,
-    },
-  )
+const whatIDo = [
+  'Develop full-stack web and mobile applications',
+  'Optimize application performance and user experience',
+  'Collaborate with teams to deliver high-quality software',
+  'Integrate third-party APIs and services',
+]
 
-  // Start observing the section element
-  if (sectionRef.value) {
-    observer.observe(sectionRef.value)
-  }
-
-  // Clean up the observer when component is unmounted
-  onUnmounted(() => {
-    if (sectionRef.value) {
-      observer.unobserve(sectionRef.value)
-    }
-  })
-})
+const metrics = [
+  { value: '5+', label: 'Years experience' },
+  { value: '4', label: 'Products shipped' },
+  { value: '15+', label: 'Technologies' },
+]
 </script>

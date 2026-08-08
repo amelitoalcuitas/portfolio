@@ -1,10 +1,11 @@
 /**
- * Service for interacting with the Google Gemini API
+ * Service for interacting with OpenRouter's free model router
+ * (https://openrouter.ai/openrouter/free) via its OpenAI-compatible API.
  */
 
 // Define message types
 export interface ChatMessage {
-  role: 'user' | 'model' | 'assistant'
+  role: 'user' | 'assistant'
   content: string
   timestamp: Date
 }
@@ -13,17 +14,18 @@ export interface ChatHistory {
   messages: ChatMessage[]
 }
 
-class GeminiService {
+class OpenRouterService {
   private apiKey: string
-  private apiUrl: string = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+  private apiUrl: string = 'https://openrouter.ai/api/v1/chat/completions'
+  private model: string = 'openrouter/free'
   private systemPrompt: string
 
   constructor() {
     // Get API key from environment variables
-    this.apiKey = import.meta.env.VITE_GEMINI_API_KEY || ''
+    this.apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || ''
 
     if (!this.apiKey) {
-      console.error('Gemini API key is not set. Please add VITE_GEMINI_API_KEY to your .env file.')
+      console.error('OpenRouter API key is not set. Please add VITE_OPENROUTER_API_KEY to your .env file.')
     }
 
     // Default system prompt/instructions for the AI
@@ -54,6 +56,7 @@ Experience:
 - Full Stack Web Developer at Bluefrog Contents and Support Inc. (2017-2018)
 
 Projects: (mention that these are the only publicly avaible projects since some are private and confidential)
+- Aktiv: Sports hub discovery and booking platform using Nuxt.js, Vue.js, Laravel, TypeScript
 - Ordering Portal: Admin/customer views using Vue.js, Nuxt.js, TypeScript, Laravel
 - Triggerly: Acid reflux tracker mobile app using Flutter and Sqflite
 - Zubbies: Job scheduler and employee management system using Flutter, Node.js, Firebase
@@ -72,7 +75,7 @@ Navigation:
 - Projects: #projects
 - Skills: #skills
 - Contact: #contact
-When a user asks for something that can be found in the page, reply with that you are glad to navigate to that section for you. 
+When a user asks for something that can be found in the page, reply with that you are glad to navigate to that section for you.
 Include the # in your response as a hyperlink in markup.
 
 Formatting:
@@ -112,52 +115,33 @@ Guidelines:
   }
 
   /**
-   * Send a message to the Gemini API and get a response
+   * Send a message to OpenRouter's free model router and get a response
    * @param message The user's message
    * @param history Previous chat history
    * @returns The assistant's response
    */
   async sendMessage(message: string, history: ChatMessage[] = []): Promise<string> {
     try {
-      // Format the conversation history for the API
-      const formattedHistory = []
+      // OpenAI-compatible chat format: system prompt first, then the conversation turns
+      const messages = [
+        { role: 'system', content: this.systemPrompt },
+        ...history.map((msg) => ({ role: msg.role, content: msg.content })),
+        { role: 'user', content: message },
+      ]
 
-      // Always add system prompt as the first message in every request
-      // Gemini only supports 'user' and 'model' roles
-      formattedHistory.push({
-        role: 'model',
-        parts: [{ text: this.systemPrompt }]
-      })
-
-      // Add conversation history
-      history.forEach(msg => {
-        // Gemini only supports 'user' and 'model' roles
-        formattedHistory.push({
-          role: msg.role === 'assistant' || msg.role === 'model' ? 'model' : 'user',
-          parts: [{ text: msg.content }]
-        })
-      })
-
-      // Add the current message
-      formattedHistory.push({
-        role: 'user',
-        parts: [{ text: message }]
-      })
-
-      // Prepare the request
-      const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
+      const response = await fetch(this.apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+          'HTTP-Referer': window.location.origin,
+          'X-Title': "Amelito Alcuitas's Portfolio",
         },
         body: JSON.stringify({
-          contents: formattedHistory,
-          generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1000,
-          }
+          model: this.model,
+          messages,
+          temperature: 0.7,
+          max_tokens: 1000,
         }),
       })
 
@@ -168,16 +152,17 @@ Guidelines:
 
       const data = await response.json()
 
-      // Extract the response text
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Whoopsie! Something went wrong. Mind giving it another try?'
+      // Extract the response text (OpenAI-compatible response shape)
+      const responseText =
+        data.choices?.[0]?.message?.content || 'Whoopsie! Something went wrong. Mind giving it another try?'
 
       return responseText
     } catch (error) {
-      console.error('Error calling Gemini API:', error)
+      console.error('Error calling OpenRouter API:', error)
       return 'Whoopsie! Something went wrong. Mind giving it another try?'
     }
   }
 }
 
 // Create and export a singleton instance
-export const geminiService = new GeminiService()
+export const openRouterService = new OpenRouterService()

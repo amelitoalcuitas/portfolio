@@ -1,5 +1,27 @@
 @import 'tailwindcss';
 
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Fraunces', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-ink-950: #08080b;
+  --color-ink-900: #0a0a0f;
+  --color-ink-800: #131319;
+  --color-ink-700: #1b1b23;
+  --color-ink-600: #26262f;
+
+  --color-mist-400: #8b8b98;
+  --color-mist-200: #c8c8d1;
+  --color-mist-100: #f2f2f5;
+
+  --color-accent-400: #a78bfa;
+  --color-accent-500: #8b5cf6;
+  --color-accent-600: #6366f1;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 html {
   scroll-behavior: smooth;
   height: 100%;
@@ -7,9 +29,9 @@ html {
 }
 
 body {
-  background-color: #111827; /* bg-gray-900 */
-  color: #ffffff; /* text-white */
-  font-family: 'Bitter', serif;
+  background-color: #0a0a0f;
+  color: #f2f2f5;
+  font-family: 'Inter', sans-serif;
   line-height: 1.6;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -19,31 +41,57 @@ body {
   overflow-x: hidden;
 }
 
+/* Ambient background: fixed radial glows + fine grain, replaces the old particle canvas */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #0a0a0f;
+}
+
+.ambient-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
+    radial-gradient(50rem 36rem at 100% 20%, rgba(99, 102, 241, 0.1), transparent 55%),
+    radial-gradient(40rem 40rem at 50% 100%, rgba(139, 92, 246, 0.08), transparent 60%);
+}
+
+.ambient-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
 /* Custom Scrollbar Styling */
-/* For Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f2937; /* bg-gray-800 */
-  border-radius: 10px;
+  background: #0a0a0f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* bg-blue-500 */
+  background: #6366f1;
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; /* bg-blue-600 */
+  background: #8b5cf6;
 }
 
-/* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3b82f6 #1f2937; /* thumb and track color */
+  scrollbar-color: #6366f1 #0a0a0f;
 }
 
 /* Typography */
@@ -53,20 +101,53 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Bitter', serif;
+  font-family: 'Fraunces', serif;
 }
 
-/* Custom utility classes */
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #a78bfa;
+}
+
 .section-heading {
-  font-family: 'Bitter', serif;
-  letter-spacing: -0.025em;
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: 'Fraunces', serif;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.05;
 }
 
-/* Add a subtle text shadow to headings for better contrast */
-h1,
-h2,
-h3 {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.text-gradient {
+  background: linear-gradient(120deg, #f2f2f5 0%, #c8c8d1 40%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Shared scroll-reveal transition, driven by the .is-visible class from useReveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }

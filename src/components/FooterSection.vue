@@ -1,9 +1,9 @@
 <template>
-  <footer class="bg-gray-900 py-10 px-4 border-t border-gray-800">
+  <footer class="relative py-10 px-6 border-t border-white/[0.08]">
     <div class="container mx-auto">
-      <div class="flex flex-col md:flex-row justify-start items-center">
-        <p class="text-gray-500 text-sm mb-4 md:mb-0">
-          &copy; {{ new Date().getFullYear() }} Amelito N. Alcuitas Jr. All rights reserved.
+      <div class="flex justify-center items-center">
+        <p class="text-mist-400 text-sm font-mono">
+          &copy; {{ new Date().getFullYear() }} Amelito N. Alcuitas Jr.
         </p>
       </div>
     </div>
