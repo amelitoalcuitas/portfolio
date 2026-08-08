@@ -21,9 +21,14 @@ export function formatMarkdown(text: string): string {
     // backslashes/punctuation instead of applying the intended formatting.
     const unescaped = text.replace(/\\([*_[\]()~`>#+\-.!])/g, '$1')
 
+    // Some models also insert a line break or space between a link's ]
+    // and (, e.g. "[text]\n(url)" — markdown only recognizes [text](url)
+    // as a link when they're directly adjacent, so close that gap back up.
+    const relinked = unescaped.replace(/\]\s+\(/g, '](')
+
     // Use marked.parse which returns string | Promise<string>
     // For our simple implementation, we'll use a simpler approach
-    const rawHtml = marked(unescaped) as string
+    const rawHtml = marked(relinked) as string
 
     // Sanitize the HTML to prevent XSS attacks
     return DOMPurify.sanitize(rawHtml)
